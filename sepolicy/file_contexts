@@ -26,3 +26,5 @@
 
 # EFS
 /dev/block/bootdevice/by-name/efs                                   u:object_r:modem_efs_partition_device:s0
+
+/sys/block/mmcblk(/.*)?                   u:object_r:sysfs_devices_system_iosched:s0
