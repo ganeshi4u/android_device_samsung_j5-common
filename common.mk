@@ -102,7 +102,6 @@ PRODUCT_PACKAGES += \
 # Media
 PRODUCT_PACKAGES += \
     libextmedia_jni \
-    qcmediaplayer \
     libdashplayer \
     libOmxVidcCommon \
     libOmxVenc \
@@ -149,13 +148,14 @@ PRODUCT_PACKAGES += \
 
 # Filesystem
 PRODUCT_PACKAGES += \
-    fsck.f2fs
+    fsck.f2fs \
+    static_busybox \
+    make_ext4fs \
+    setup_fs
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
-    LiveWallpapers \
-    LiveWallpapersPicker \
-    VisualizationWallpapers
+    librs_jni
 
 # WCNSS service daemon
 PRODUCT_PACKAGES += \
@@ -265,9 +265,6 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=J5RIL
-
-# We have enough storage space to hold precise GC data
-PRODUCT_TAGS += dalvik.gc.type-precise
 
 # Recovery
 PRODUCT_COPY_FILES += \

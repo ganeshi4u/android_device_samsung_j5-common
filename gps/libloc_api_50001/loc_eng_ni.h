@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2009,2011,2014 The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -26,54 +26,34 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef LOC_TARGET_H
-#define LOC_TARGET_H
-#define TARGET_SET(gnss,ssc) ( (gnss<<1)|ssc )
-#define TARGET_DEFAULT       TARGET_SET(GNSS_MSM, HAS_SSC)
-#define TARGET_MDM           TARGET_SET(GNSS_MDM, HAS_SSC)
-#define TARGET_APQ_SA        TARGET_SET(GNSS_GSS, NO_SSC)
-#define TARGET_MPQ           TARGET_SET(GNSS_NONE,NO_SSC)
-#define TARGET_MSM_NO_SSC    TARGET_SET(GNSS_MSM, NO_SSC)
-#define TARGET_QCA1530       TARGET_SET(GNSS_QCA1530, NO_SSC)
-#define TARGET_PDS           TARGET_SET(GNSS_PDS, NO_SSC)
-#define TARGET_AUTO          TARGET_SET(GNSS_AUTO, NO_SSC)
-#define TARGET_UNKNOWN       TARGET_SET(GNSS_UNKNOWN, NO_SSC)
-#define getTargetGnssType(target)  (target>>1)
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+#ifndef LOC_ENG_NI_H
+#define LOC_ENG_NI_H
 
-unsigned int loc_get_target(void);
+#include <stdbool.h>
+#include <LocEngAdapter.h>
 
-/*The character array passed to this function should have length
-  of atleast PROPERTY_VALUE_MAX*/
-void loc_get_target_baseband(char *baseband, int array_length);
-/*The character array passed to this function should have length
-  of atleast PROPERTY_VALUE_MAX*/
-void loc_get_platform_name(char *platform_name, int array_length);
+#define LOC_NI_NO_RESPONSE_TIME            20                      /* secs */
+#define LOC_NI_NOTIF_KEY_ADDRESS           "Address"
+#define GPS_NI_RESPONSE_IGNORE             4
 
-/* Please remember to update 'target_name' in loc_log.cpp,
-   if do any changes to this enum. */
-typedef enum {
-    GNSS_NONE = 0,
-    GNSS_MSM,
-    GNSS_GSS,
-    GNSS_MDM,
-    GNSS_QCA1530,
-    GNSS_PDS,
-    GNSS_AUTO,
-    GNSS_UNKNOWN
-}GNSS_TARGET;
+typedef struct {
+    pthread_t               thread;            /* NI thread */
+    int                     respTimeLeft;       /* examine time for NI response */
+    bool                    respRecvd;   /* NI User reponse received or not from Java layer*/
+    void*                   rawRequest;
+    int                     reqID;         /* ID to check against response */
+    GpsUserResponseType     resp;
+    pthread_cond_t          tCond;
+    pthread_mutex_t         tLock;
+    LocEngAdapter*          adapter;
+} loc_eng_ni_session_s_type;
 
-typedef enum {
-    NO_SSC = 0,
-    HAS_SSC
-}SSC_TYPE;
+typedef struct {
+    loc_eng_ni_session_s_type session;    /* SUPL NI Session */
+    loc_eng_ni_session_s_type sessionEs;  /* Emergency SUPL NI Session */
+    int reqIDCounter;
+} loc_eng_ni_data_s_type;
 
-#ifdef __cplusplus
-}
-#endif
 
-#endif /*LOC_TARGET_H*/
+#endif /* LOC_ENG_NI_H */

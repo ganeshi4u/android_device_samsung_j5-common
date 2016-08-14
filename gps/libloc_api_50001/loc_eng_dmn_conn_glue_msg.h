@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -26,54 +26,26 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef LOC_TARGET_H
-#define LOC_TARGET_H
-#define TARGET_SET(gnss,ssc) ( (gnss<<1)|ssc )
-#define TARGET_DEFAULT       TARGET_SET(GNSS_MSM, HAS_SSC)
-#define TARGET_MDM           TARGET_SET(GNSS_MDM, HAS_SSC)
-#define TARGET_APQ_SA        TARGET_SET(GNSS_GSS, NO_SSC)
-#define TARGET_MPQ           TARGET_SET(GNSS_NONE,NO_SSC)
-#define TARGET_MSM_NO_SSC    TARGET_SET(GNSS_MSM, NO_SSC)
-#define TARGET_QCA1530       TARGET_SET(GNSS_QCA1530, NO_SSC)
-#define TARGET_PDS           TARGET_SET(GNSS_PDS, NO_SSC)
-#define TARGET_AUTO          TARGET_SET(GNSS_AUTO, NO_SSC)
-#define TARGET_UNKNOWN       TARGET_SET(GNSS_UNKNOWN, NO_SSC)
-#define getTargetGnssType(target)  (target>>1)
+#ifndef LOC_ENG_DMN_CONN_GLUE_MSG_H
+#define LOC_ENG_DMN_CONN_GLUE_MSG_H
 
 #ifdef __cplusplus
-extern "C"
-{
-#endif
+extern "C" {
+#endif /* __cplusplus */
 
-unsigned int loc_get_target(void);
 
-/*The character array passed to this function should have length
-  of atleast PROPERTY_VALUE_MAX*/
-void loc_get_target_baseband(char *baseband, int array_length);
-/*The character array passed to this function should have length
-  of atleast PROPERTY_VALUE_MAX*/
-void loc_get_platform_name(char *platform_name, int array_length);
+#include <linux/types.h>
+#include "loc_eng_dmn_conn_glue_pipe.h"
 
-/* Please remember to update 'target_name' in loc_log.cpp,
-   if do any changes to this enum. */
-typedef enum {
-    GNSS_NONE = 0,
-    GNSS_MSM,
-    GNSS_GSS,
-    GNSS_MDM,
-    GNSS_QCA1530,
-    GNSS_PDS,
-    GNSS_AUTO,
-    GNSS_UNKNOWN
-}GNSS_TARGET;
-
-typedef enum {
-    NO_SSC = 0,
-    HAS_SSC
-}SSC_TYPE;
+int loc_eng_dmn_conn_glue_msgget(const char * q_path, int mode);
+int loc_eng_dmn_conn_glue_msgremove(const char * q_path, int msgqid);
+int loc_eng_dmn_conn_glue_msgsnd(int msgqid, const void * msgp, size_t msgsz);
+int loc_eng_dmn_conn_glue_msgrcv(int msgqid, void *msgp, size_t msgsz);
+int loc_eng_dmn_conn_glue_msgflush(int msgqid);
+int loc_eng_dmn_conn_glue_msgunblock(int msgqid);
 
 #ifdef __cplusplus
 }
-#endif
+#endif /* __cplusplus */
 
-#endif /*LOC_TARGET_H*/
+#endif /* LOC_ENG_DMN_CONN_GLUE_MSG_H */
