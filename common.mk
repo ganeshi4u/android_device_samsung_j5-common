@@ -173,6 +173,10 @@ PRODUCT_PACKAGES += \
     libxml2 \
     Stk
 
+# libhealthd library as the supplement of off-mode charging
+PRODUCT_PACKAGES += \
+    libhealthd.qcom
+
 # Audio configuration
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
@@ -274,3 +278,6 @@ PRODUCT_COPY_FILES += \
 
 # Common qcom
 $(call inherit-product, device/samsung/qcom-common/qcom-common.mk)
+
+# setup dalvik vm configs.
+$(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)

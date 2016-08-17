@@ -33,14 +33,17 @@ TARGET_BOOTLOADER_BOARD_NAME := MSM8916
 # Arch
 TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp
 TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
-TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT := cortex-a53
 TARGET_CPU_CORTEX_A53 := true
+TARGET_ARCH_VARIANT := armv7-a-neon
+TARGET_CPU_ABI := armeabi-v7a
+TARGET_CPU_ABI2 := armeabi
 
 TARGET_SPECIFIC_HEADER_PATH := device/samsung/j5-common/include
 
 # Kernel
 BOARD_CUSTOM_BOOTIMG_MK      := device/samsung/j5-common/mkbootimg.mk
-BOARD_KERNEL_CMDLINE         := console=null androidboot.hardware=qcom user_debug=23 msm_rtb.filter=0x3F ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci androidboot.selinux=enforcing
+BOARD_KERNEL_CMDLINE         := console=tty0 androidboot.hardware=qcom user_debug=23 msm_rtb.filter=0x3F ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci debug
 BOARD_KERNEL_BASE            := 0x80000000
 BOARD_RAMDISK_OFFSET         := 0x02000000
 BOARD_KERNEL_TAGS_OFFSET     := 0x01e00000
@@ -125,7 +128,7 @@ TARGET_CONTINUOUS_SPLASH_ENABLED := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
-#OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 
 # ANT+
@@ -177,7 +180,7 @@ TW_TARGET_USES_QCOM_BSP := true
 BOARD_HAS_NO_SELECT_BUTTON := true
 
 # Storage
-#RECOVERY_VARIANT := twrp
+RECOVERY_VARIANT := cm
 #TARGET_RECOVERY_FSTAB := device/samsung/j5-common/recovery/twrp.fstab
 TARGET_RECOVERY_FSTAB := device/samsung/j5-common/rootdir/main/fstab.qcom
 TW_INTERNAL_STORAGE_PATH := "/data/media"
